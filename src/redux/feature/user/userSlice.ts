@@ -6,7 +6,16 @@ type TInitialState = {
   users: IUser[];
 };
 const initialState: TInitialState = {
-  users: [],
+  users: [
+    {
+        id:'lsdfjldsf kf',
+        name: 'sourav' 
+    },
+    {
+        id:'lsdfjjkjjldsf kf',
+        name: 'Faisal ' 
+    }
+  ],
 };
 const UserSlice = createSlice({
   name: "user",
