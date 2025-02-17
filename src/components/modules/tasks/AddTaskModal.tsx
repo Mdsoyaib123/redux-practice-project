@@ -32,17 +32,27 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useAppDispatch } from "@/redux/hook";
+import { useCreateTaskMutation } from "@/redux/api/baseApi";
 import { ITask } from "@/types";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 const AddTaskModal = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
   const form = useForm();
-  const onSubmit = (data: ITask) => {
+
+  const [createTask, { data, isLoading }] = useCreateTaskMutation();
+  console.log({ data, isLoading });
+
+  const onSubmit = async (data: ITask) => {
+    const taskData = {
+      ...data,
+      isCompleted: false,
+    };
+    const res = await createTask(taskData).unwrap();
+    
     setOpen(false);
     form.reset();
   };
@@ -75,10 +85,10 @@ const AddTaskModal = () => {
             />
             <FormField
               control={form.control}
-              name="des"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Des </FormLabel>
+                  <FormLabel>Description </FormLabel>
                   <FormControl>
                     <Textarea {...field} value={field.value || ""}></Textarea>
                   </FormControl>
@@ -109,28 +119,7 @@ const AddTaskModal = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="assignTo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assign To</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="select user   " />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="due date "
