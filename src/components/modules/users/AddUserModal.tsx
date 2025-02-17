@@ -26,10 +26,9 @@ import { useForm } from "react-hook-form";
 
 const AddUserModal = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
+  
   const form = useForm();
   const onSubmit = (data: IUser) => {
-    dispatch(addUser(data));
     setOpen(false)
     form.reset()
   };
